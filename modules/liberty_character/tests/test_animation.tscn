@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://modules/liberty_character/tests/liberty_animation_course.gd" id="1_course"]
+
+[node name="AnimationCourse" type="Node3D"]
+script = ExtResource("1_course")

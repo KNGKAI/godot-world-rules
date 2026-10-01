@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CinematicSequence" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://modules/cinematic/shots/cinematic_look_at_hold.gd" id="2"]
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_shot.gd" id="3"]
+
+[sub_resource type="Resource" id="Hold"]
+script = ExtResource("2")
+duration = 3.0
+subtitle = "Parked."
+anchor_role = &"sedan"
+local_offset = Vector3(0, 2.4, 3.5)
+target_role = &"park_bay"
+
+[resource]
+script = ExtResource("1")
+id = &"tour_finish"
+shots = Array[ExtResource("3")]([SubResource("Hold")])

@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="RERuleBook" load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://addons/rule_engine/resources/rule_book.gd" id="1"]
+[ext_resource type="Script" path="res://addons/rule_engine/resources/rule.gd" id="2"]
+[ext_resource type="Script" path="res://addons/rule_engine/resources/conditions/not.gd" id="3"]
+[ext_resource type="Script" path="res://addons/rule_engine/resources/conditions/exists.gd" id="4"]
+[ext_resource type="Script" path="res://example/integration/cinematic_request_action.gd" id="5"]
+
+[sub_resource type="Resource" id="Never"]
+script = ExtResource("4")
+source = 1
+key = &"__never__"
+
+[sub_resource type="Resource" id="Always"]
+script = ExtResource("3")
+condition = SubResource("Never")
+
+[sub_resource type="Resource" id="RequestGlance"]
+script = ExtResource("5")
+sequence_id = &"package_glance"
+
+[sub_resource type="Resource" id="GlanceRule"]
+script = ExtResource("2")
+id = &"cinematic_package_glance"
+event = &"package_picked_up"
+condition = SubResource("Always")
+actions = Array[ExtResource("5")]([SubResource("RequestGlance")])
+
+[sub_resource type="Resource" id="RequestHold"]
+script = ExtResource("5")
+sequence_id = &"delivery_hold"
+
+[sub_resource type="Resource" id="HoldRule"]
+script = ExtResource("2")
+id = &"cinematic_delivery_hold"
+event = &"package_delivered"
+condition = SubResource("Always")
+actions = Array[ExtResource("5")]([SubResource("RequestHold")])
+
+[sub_resource type="Resource" id="RequestTour"]
+script = ExtResource("5")
+sequence_id = &"tour_finish"
+
+[sub_resource type="Resource" id="TourRule"]
+script = ExtResource("2")
+id = &"cinematic_tour_finish"
+event = &"sedan_parked"
+condition = SubResource("Always")
+actions = Array[ExtResource("5")]([SubResource("RequestTour")])
+
+[resource]
+script = ExtResource("1")
+rules = Array[ExtResource("2")]([SubResource("GlanceRule"), SubResource("HoldRule"), SubResource("TourRule")])

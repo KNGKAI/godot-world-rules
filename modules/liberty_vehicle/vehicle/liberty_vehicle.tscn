@@ -1,0 +1,159 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://modules/liberty_vehicle/vehicle/liberty_vehicle.gd" id="1"]
+
+[ext_resource type="Script" path="res://modules/liberty_vehicle/vehicle/liberty_vehicle_possession.gd" id="2_possession"]
+[ext_resource type="Script" path="res://modules/liberty_vehicle/vehicle/liberty_vehicle_seat.gd" id="3_seat"]
+[ext_resource type="Script" path="res://modules/liberty_vehicle/camera/liberty_vehicle_camera_rig.gd" id="4_camera"]
+
+[sub_resource type="CylinderMesh" id="WheelMesh"]
+top_radius = 0.36
+bottom_radius = 0.36
+height = 0.22
+
+[sub_resource type="BoxShape3D" id="SeatShape"]
+size = Vector3(1.8, 2.2, 2.0)
+
+[sub_resource type="BoxShape3D" id="BodyShape"]
+size = Vector3(1.8, 0.55, 3.8)
+
+[sub_resource type="BoxMesh" id="BodyMesh"]
+size = Vector3(1.9, 0.6, 3.9)
+
+[sub_resource type="StandardMaterial3D" id="BodyMat"]
+albedo_color = Color(0.05, 0.38, 0.82, 1)
+metallic = 0.5
+roughness = 0.28
+
+[sub_resource type="BoxMesh" id="CabinMesh"]
+size = Vector3(1.45, 0.55, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="GlassMat"]
+albedo_color = Color(0.06, 0.15, 0.22, 0.88)
+metallic = 0.15
+roughness = 0.1
+
+[node name="LibertyVehicle" type="VehicleBody3D"]
+script = ExtResource("1")
+collision_layer = 16
+collision_mask = 7
+mass = 1320.0
+linear_damp_mode = 1
+linear_damp = 0.03
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, 0.52, 0.12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.62, 0)
+shape = SubResource("BodyShape")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.62, 0)
+mesh = SubResource("BodyMesh")
+material_override = SubResource("BodyMat")
+
+[node name="Cabin" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.08, -0.2)
+mesh = SubResource("CabinMesh")
+material_override = SubResource("GlassMat")
+
+[node name="FrontLeft" type="VehicleWheel3D" parent="."]
+position = Vector3(-0.94, 0.38, -1.25)
+wheel_radius = 0.36
+wheel_rest_length = 0.4
+wheel_roll_influence = 0.18
+suspension_travel = 0.44
+suspension_stiffness = 11.0
+suspension_max_force = 9000.0
+damping_compression = 1.5
+damping_relaxation = 2.2
+wheel_friction_slip = 1.05
+use_as_steering = true
+
+[node name="FrontRight" type="VehicleWheel3D" parent="."]
+position = Vector3(0.94, 0.38, -1.25)
+wheel_radius = 0.36
+wheel_rest_length = 0.4
+wheel_roll_influence = 0.18
+suspension_travel = 0.44
+suspension_stiffness = 11.0
+suspension_max_force = 9000.0
+damping_compression = 1.5
+damping_relaxation = 2.2
+wheel_friction_slip = 1.05
+use_as_steering = true
+
+[node name="RearLeft" type="VehicleWheel3D" parent="."]
+position = Vector3(-0.94, 0.38, 1.25)
+wheel_radius = 0.36
+wheel_rest_length = 0.4
+wheel_roll_influence = 0.18
+suspension_travel = 0.44
+suspension_stiffness = 11.0
+suspension_max_force = 9000.0
+damping_compression = 1.5
+damping_relaxation = 2.2
+wheel_friction_slip = 1.15
+use_as_traction = true
+
+[node name="RearRight" type="VehicleWheel3D" parent="."]
+position = Vector3(0.94, 0.38, 1.25)
+wheel_radius = 0.36
+wheel_rest_length = 0.4
+wheel_roll_influence = 0.18
+suspension_travel = 0.44
+suspension_stiffness = 11.0
+suspension_max_force = 9000.0
+damping_compression = 1.5
+damping_relaxation = 2.2
+wheel_friction_slip = 1.15
+use_as_traction = true
+
+[node name="HoodCameraMarker" type="Marker3D" parent="."]
+position = Vector3(0, 1.55, -1.25)
+rotation_degrees = Vector3(-8, 0, 0)
+
+
+[node name="Possession" type="Node" parent="."]
+script = ExtResource("2_possession")
+
+[node name="DriverSeat" type="Area3D" parent="."]
+position = Vector3(-1.0, 1.0, -0.4)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("3_seat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DriverSeat"]
+shape = SubResource("SeatShape")
+
+[node name="CameraAnchor" type="Node3D" parent="DriverSeat"]
+position = Vector3(1.0, -0.1, 0.4)
+
+[node name="ExitMarker" type="Marker3D" parent="DriverSeat"]
+position = Vector3(-0.6, -1.0, 0)
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("4_camera")
+
+[node name="ChaseCamera" type="Camera3D" parent="CameraRig"]
+fov = 68.0
+
+[node name="HoodCamera" type="Camera3D" parent="CameraRig"]
+fov = 68.0
+
+[node name="Mesh" type="MeshInstance3D" parent="FrontLeft"]
+rotation = Vector3(0, 0, 1.570796)
+mesh = SubResource("WheelMesh")
+
+[node name="Mesh" type="MeshInstance3D" parent="FrontRight"]
+rotation = Vector3(0, 0, 1.570796)
+mesh = SubResource("WheelMesh")
+
+[node name="Mesh" type="MeshInstance3D" parent="RearLeft"]
+rotation = Vector3(0, 0, 1.570796)
+mesh = SubResource("WheelMesh")
+
+[node name="Mesh" type="MeshInstance3D" parent="RearRight"]
+rotation = Vector3(0, 0, 1.570796)
+mesh = SubResource("WheelMesh")

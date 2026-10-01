@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CinematicSequence" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://modules/cinematic/shots/cinematic_world_passage.gd" id="2"]
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_shot.gd" id="3"]
+
+[sub_resource type="Resource" id="Passage"]
+script = ExtResource("2")
+duration = 0.0
+world_id = &"home"
+entry_id = &"home_entry"
+
+[resource]
+script = ExtResource("1")
+id = &"home_door"
+shots = Array[ExtResource("3")]([SubResource("Passage")])

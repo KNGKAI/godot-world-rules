@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://modules/liberty_character/character/liberty_character.gd" id="1_character"]
+[ext_resource type="Script" path="res://modules/liberty_character/events/liberty_events.gd" id="2_events"]
+[ext_resource type="Script" path="res://modules/liberty_character/events/liberty_event_adapter.gd" id="3_adapter"]
+[ext_resource type="Script" path="res://modules/liberty_character/character/liberty_camera_pivot.gd" id="4_camera"]
+[ext_resource type="Script" path="res://modules/liberty_character/mobile/liberty_mobile_controls.gd" id="5_mobile"]
+[ext_resource type="PackedScene" path="res://assets/characters/liberty_mannequin/liberty_mannequin.glb" id="6_rig"]
+[ext_resource type="Script" path="res://modules/liberty_character/animation/liberty_animation_driver.gd" id="7_animation"]
+
+[ext_resource type="Script" path="res://modules/liberty_character/traversal/liberty_traversal_coordinator.gd" id="8_traversal"]
+[ext_resource type="Script" path="res://modules/liberty_character/ragdoll/liberty_ragdoll.gd" id="9_ragdoll"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_character"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_camera"]
+radius = 0.3
+
+[node name="LibertyCharacter" type="CharacterBody3D" node_paths=PackedStringArray("input_basis_source")]
+collision_layer = 2
+collision_mask = 17
+floor_max_angle = 0.785398
+floor_snap_length = 0.3
+script = ExtResource("1_character")
+input_basis_source = NodePath("CameraPivot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_character")
+
+[node name="Rig" parent="." instance=ExtResource("6_rig")]
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Rig")
+anim_player = NodePath("../Rig/AnimationPlayer")
+callback_mode_process = 0
+
+[node name="AnimationDriver" type="Node" parent="."]
+script = ExtResource("7_animation")
+animation_tree_path = NodePath("../AnimationTree")
+
+[node name="Events" type="Node" parent="."]
+script = ExtResource("2_events")
+
+[node name="EventAdapter" type="Node" parent="."]
+script = ExtResource("3_adapter")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+top_level = true
+script = ExtResource("4_camera")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+spring_length = 4.5
+shape = SubResource("SphereShape3D_camera")
+collision_mask = 17
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+current = true
+fov = 75.0
+
+[node name="MobileControls" type="CanvasLayer" parent="."]
+script = ExtResource("5_mobile")
+
+[node name="Traversal" type="Node3D" parent="."]
+script = ExtResource("8_traversal")
+
+[node name="Ragdoll" type="Node" parent="."]
+script = ExtResource("9_ragdoll")
