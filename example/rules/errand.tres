@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="RERuleBook" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://addons/rule_engine/resources/rule_book.gd" id="1"]
+[ext_resource type="Script" path="res://addons/rule_engine/resources/rule.gd" id="2"]
+[ext_resource type="Script" path="res://addons/rule_engine/resources/conditions/compare.gd" id="3"]
+[ext_resource type="Script" path="res://addons/rule_engine/resources/actions/emit_event.gd" id="4"]
+
+[sub_resource type="Resource" id="HasPackage"]
+script = ExtResource("3")
+source = 1
+key = &"package_collected"
+value = true
+
+[sub_resource type="Resource" id="RequestUnlock"]
+script = ExtResource("4")
+event = &"vehicle_unlock_requested"
+
+[sub_resource type="Resource" id="DeliveryUnlock"]
+script = ExtResource("2")
+id = &"delivery_unlocks_sedan"
+event = &"package_delivered"
+condition = SubResource("HasPackage")
+actions = Array[ExtResource("4")]([SubResource("RequestUnlock")])
+
+[sub_resource type="Resource" id="Unlocked"]
+script = ExtResource("3")
+source = 1
+key = &"vehicle_unlocked"
+value = true
+
+[sub_resource type="Resource" id="RequestTour"]
+script = ExtResource("4")
+event = &"tour_completed"
+
+[sub_resource type="Resource" id="ParkCompletesTour"]
+script = ExtResource("2")
+id = &"parked_sedan_completes_tour"
+event = &"sedan_parked"
+condition = SubResource("Unlocked")
+actions = Array[ExtResource("4")]([SubResource("RequestTour")])
+
+[resource]
+script = ExtResource("1")
+rules = Array[ExtResource("2")]([SubResource("DeliveryUnlock"), SubResource("ParkCompletesTour")])

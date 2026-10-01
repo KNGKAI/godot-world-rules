@@ -1,0 +1,113 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="PackedScene" path="res://modules/liberty_character/character/liberty_character.tscn" id="1_character"]
+
+[sub_resource type="StandardMaterial3D" id="Material_ground"]
+albedo_color = Color(0.22, 0.25, 0.3, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Material_ramp"]
+albedo_color = Color(0.25, 0.38, 0.3, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Material_marker"]
+albedo_color = Color(1, 0.48, 0.08, 1)
+emission_enabled = true
+emission = Color(0.4, 0.12, 0.01, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_ground"]
+size = Vector3(20, 0.5, 40)
+
+[sub_resource type="BoxMesh" id="Mesh_ground"]
+material = SubResource("Material_ground")
+size = Vector3(20, 0.5, 40)
+
+[sub_resource type="BoxShape3D" id="Shape_ramp"]
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="BoxMesh" id="Mesh_ramp"]
+material = SubResource("Material_ramp")
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="BoxShape3D" id="Shape_upper"]
+size = Vector3(20, 0.5, 16)
+
+[sub_resource type="BoxMesh" id="Mesh_upper"]
+material = SubResource("Material_ground")
+size = Vector3(20, 0.5, 16)
+
+[sub_resource type="BoxMesh" id="Mesh_marker"]
+material = SubResource("Material_marker")
+size = Vector3(0.16, 0.5, 1)
+
+[node name="MovementCourse" type="Node3D"]
+
+[node name="FlatGround" type="StaticBody3D" parent="."]
+position = Vector3(0, -0.25, 4.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FlatGround"]
+shape = SubResource("Shape_ground")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FlatGround"]
+mesh = SubResource("Mesh_ground")
+
+[node name="Ramp" type="StaticBody3D" parent="."]
+position = Vector3(0, 2.2835, -20)
+rotation = Vector3(0.523599, 0, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramp"]
+shape = SubResource("Shape_ramp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ramp"]
+mesh = SubResource("Mesh_ramp")
+
+[node name="UpperPlatform" type="StaticBody3D" parent="."]
+position = Vector3(0, 4.75, -32.2)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="UpperPlatform"]
+shape = SubResource("Shape_upper")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="UpperPlatform"]
+mesh = SubResource("Mesh_upper")
+
+[node name="DistanceMarker_02_5" type="MeshInstance3D" parent="."]
+position = Vector3(4, 0.25, 7.5)
+mesh = SubResource("Mesh_marker")
+
+[node name="DistanceMarker_05_0" type="MeshInstance3D" parent="."]
+position = Vector3(4, 0.25, 5)
+mesh = SubResource("Mesh_marker")
+
+[node name="DistanceMarker_07_5" type="MeshInstance3D" parent="."]
+position = Vector3(4, 0.25, 2.5)
+mesh = SubResource("Mesh_marker")
+
+[node name="DistanceMarker_10_0" type="MeshInstance3D" parent="."]
+position = Vector3(4, 0.25, 0)
+mesh = SubResource("Mesh_marker")
+
+[node name="DistanceMarker_12_5" type="MeshInstance3D" parent="."]
+position = Vector3(4, 0.25, -2.5)
+mesh = SubResource("Mesh_marker")
+
+[node name="DistanceMarker_15_0" type="MeshInstance3D" parent="."]
+position = Vector3(4, 0.25, -5)
+mesh = SubResource("Mesh_marker")
+
+[node name="LibertyCharacter" parent="." instance=ExtResource("1_character")]
+position = Vector3(0, 0, 10)
+
+[node name="FixedCamera" type="Camera3D" parent="."]
+position = Vector3(12, 9, 18)
+rotation_degrees = Vector3(-20, 20, 0)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-55, -25, 0)
+shadow_enabled = true

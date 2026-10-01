@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CinematicSequence" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://modules/cinematic/shots/cinematic_camera_cut.gd" id="2"]
+[ext_resource type="Script" path="res://modules/cinematic/shots/cinematic_look_at_hold.gd" id="3"]
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_shot.gd" id="4"]
+
+[sub_resource type="Resource" id="Cut"]
+script = ExtResource("2")
+duration = 0.0
+role = &"sedan_view"
+
+[sub_resource type="Resource" id="Hold"]
+script = ExtResource("3")
+duration = 3.5
+subtitle = "The sedan."
+anchor_role = &"sedan_view"
+local_offset = Vector3(0, 0, 0)
+target_role = &"sedan"
+
+[resource]
+script = ExtResource("1")
+id = &"sedan_reveal"
+shots = Array[ExtResource("4")]([SubResource("Cut"), SubResource("Hold")])

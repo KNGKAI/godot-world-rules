@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CinematicSequence" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://modules/cinematic/shots/cinematic_look_at_hold.gd" id="2"]
+[ext_resource type="Script" path="res://modules/cinematic/cinematic_shot.gd" id="3"]
+
+[sub_resource type="Resource" id="Hold"]
+script = ExtResource("2")
+duration = 2.5
+subtitle = "Delivered."
+anchor_role = &"player"
+local_offset = Vector3(0, 1.45, 0)
+target_role = &"contact"
+
+[resource]
+script = ExtResource("1")
+id = &"delivery_hold"
+shots = Array[ExtResource("3")]([SubResource("Hold")])

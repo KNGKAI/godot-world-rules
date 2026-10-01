@@ -1,0 +1,43 @@
+extends SceneTree
+const S = preload("res://modules/liberty_character/tests/liberty_test_support.gd")
+func _initialize() -> void: call_deferred("run")
+func run() -> void:
+	var mobile := LibertyVehicleMobileControls.new()
+	mobile.force_visible = true
+	root.add_child(mobile)
+	S.expect_false(mobile.visible, "desktop vehicle overlay starts inactive")
+	mobile.set_active(true)
+	for title: String in mobile.buttons:
+		var rect: Rect2 = mobile.buttons[title].get_global_rect()
+		S.expect_true(root.get_visible_rect().encloses(rect), title + " fits safe viewport")
+	S.expect_true(mobile.buttons.has("EXIT"), "shipped vehicle UI includes interact")
+	mobile.press_pointer(0, &"liberty_vehicle_throttle")
+	mobile.press_pointer(1, &"liberty_vehicle_throttle")
+	mobile.release_pointer(0)
+	S.expect_true(Input.is_action_pressed(&"liberty_vehicle_throttle"), "second finger keeps shared action held")
+	mobile.release_pointer(1)
+	S.expect_false(Input.is_action_pressed(&"liberty_vehicle_throttle"), "last finger releases action")
+	mobile.press_pointer(2, &"liberty_vehicle_handbrake")
+	mobile.press_pointer(3, &"liberty_vehicle_steer_left")
+	mobile.set_active(false)
+	S.expect_false(Input.is_action_pressed(&"liberty_vehicle_handbrake"), "hide releases handbrake")
+	S.expect_false(Input.is_action_pressed(&"liberty_vehicle_steer_left"), "hide releases steer")
+	mobile.set_active(true)
+	S.expect_false(Input.is_action_pressed(&"liberty_vehicle_handbrake"), "resume never represses old fingers")
+	mobile.press_pointer(4, &"liberty_vehicle_brake")
+	mobile._notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
+	S.expect_false(Input.is_action_pressed(&"liberty_vehicle_brake"), "focus loss releases")
+	mobile.force_visible = false
+	mobile.set_active(true)
+	S.expect_false(mobile.visible, "desktop active overlay follows touchscreen policy")
+	var calls := {"count": 0}
+	mobile.force_visible = true
+	mobile.set_active(true)
+	mobile.add_custom_button("MARK", Color(0.2, 0.4, 0.7, 0.8), func() -> void: calls.count += 1)
+	var mark: Panel = mobile.get_custom_button("MARK")
+	S.expect_true(mark != null and root.get_visible_rect().encloses(mark.get_global_rect()), "custom button fits the safe viewport")
+	S.expect_true(mobile._press_custom(9, mark.get_global_rect().get_center()), "custom press hits the button")
+	S.expect_equal(calls.count, 1, "custom button calls its callback")
+	mobile.free()
+	print("vehicle touch ownership PASS")
+	quit(S.exit_code())

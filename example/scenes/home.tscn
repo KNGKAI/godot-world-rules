@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://example/integration/home.gd" id="1"]
+[ext_resource type="Script" path="res://addons/world_manager/runtime/scenes/world_entry_point_3d.gd" id="2"]
+
+[node name="Home" type="Node3D"]
+script = ExtResource("1")
+
+[node name="HomeEntry" type="Marker3D" parent="."]
+script = ExtResource("2")
+id = &"home_entry"
+position = Vector3(0, 0.1, 2)

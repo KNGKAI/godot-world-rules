@@ -1,0 +1,205 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="PackedScene" path="res://modules/liberty_character/character/liberty_character.tscn" id="1_character"]
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.17, 0.19, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_wall"]
+albedo_color = Color(0.34, 0.43, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_hazard"]
+albedo_color = Color(0.68, 0.35, 0.18, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_floor"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxMesh" id="Mesh_floor"]
+material = SubResource("Material_floor")
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxShape3D" id="Shape_close_wall"]
+size = Vector3(8, 4, 0.4)
+
+[sub_resource type="BoxMesh" id="Mesh_close_wall"]
+material = SubResource("Material_hazard")
+size = Vector3(8, 4, 0.4)
+
+[sub_resource type="BoxShape3D" id="Shape_corridor"]
+size = Vector3(0.4, 4, 10)
+
+[sub_resource type="BoxMesh" id="Mesh_corridor"]
+material = SubResource("Material_wall")
+size = Vector3(0.4, 4, 10)
+
+[sub_resource type="BoxShape3D" id="Shape_pillar"]
+size = Vector3(1, 2.5, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_pillar"]
+material = SubResource("Material_hazard")
+size = Vector3(1, 2.5, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_ceiling"]
+size = Vector3(4, 0.4, 4)
+
+[sub_resource type="BoxMesh" id="Mesh_ceiling"]
+material = SubResource("Material_wall")
+size = Vector3(4, 0.4, 4)
+
+[sub_resource type="BoxShape3D" id="Shape_corner_a"]
+size = Vector3(4, 4, 0.4)
+
+[sub_resource type="BoxMesh" id="Mesh_corner_a"]
+material = SubResource("Material_wall")
+size = Vector3(4, 4, 0.4)
+
+[sub_resource type="BoxShape3D" id="Shape_corner_b"]
+size = Vector3(0.4, 4, 4)
+
+[sub_resource type="BoxMesh" id="Mesh_corner_b"]
+material = SubResource("Material_wall")
+size = Vector3(0.4, 4, 4)
+
+[sub_resource type="BoxShape3D" id="Shape_pocket_back"]
+size = Vector3(4, 3, 0.4)
+
+[sub_resource type="BoxMesh" id="Mesh_pocket_back"]
+material = SubResource("Material_hazard")
+size = Vector3(4, 3, 0.4)
+
+[sub_resource type="BoxShape3D" id="Shape_pocket_side"]
+size = Vector3(0.4, 3, 3)
+
+[sub_resource type="BoxMesh" id="Mesh_pocket_side"]
+material = SubResource("Material_hazard")
+size = Vector3(0.4, 3, 3)
+
+[node name="CameraCourse" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+position = Vector3(0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("Shape_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("Mesh_floor")
+
+[node name="CloseWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 2, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CloseWall"]
+shape = SubResource("Shape_close_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CloseWall"]
+mesh = SubResource("Mesh_close_wall")
+
+[node name="CorridorLeft" type="StaticBody3D" parent="."]
+position = Vector3(6, 2, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CorridorLeft"]
+shape = SubResource("Shape_corridor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CorridorLeft"]
+mesh = SubResource("Mesh_corridor")
+
+[node name="CorridorRight" type="StaticBody3D" parent="."]
+position = Vector3(10, 2, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CorridorRight"]
+shape = SubResource("Shape_corridor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CorridorRight"]
+mesh = SubResource("Mesh_corridor")
+
+[node name="PillarLeft" type="StaticBody3D" parent="."]
+position = Vector3(7, 1.25, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PillarLeft"]
+shape = SubResource("Shape_pillar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PillarLeft"]
+mesh = SubResource("Mesh_pillar")
+
+[node name="PillarRight" type="StaticBody3D" parent="."]
+position = Vector3(9, 1.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PillarRight"]
+shape = SubResource("Shape_pillar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PillarRight"]
+mesh = SubResource("Mesh_pillar")
+
+[node name="LowCeiling" type="StaticBody3D" parent="."]
+position = Vector3(8, 2.6, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LowCeiling"]
+shape = SubResource("Shape_ceiling")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LowCeiling"]
+mesh = SubResource("Mesh_ceiling")
+
+[node name="CornerWallA" type="StaticBody3D" parent="."]
+position = Vector3(-4, 2, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CornerWallA"]
+shape = SubResource("Shape_corner_a")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CornerWallA"]
+mesh = SubResource("Mesh_corner_a")
+
+[node name="CornerWallB" type="StaticBody3D" parent="."]
+position = Vector3(-6, 2, -6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CornerWallB"]
+shape = SubResource("Shape_corner_b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CornerWallB"]
+mesh = SubResource("Mesh_corner_b")
+
+[node name="TightPocketBack" type="StaticBody3D" parent="."]
+position = Vector3(14, 1.5, 9)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TightPocketBack"]
+shape = SubResource("Shape_pocket_back")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TightPocketBack"]
+mesh = SubResource("Mesh_pocket_back")
+
+[node name="TightPocketLeft" type="StaticBody3D" parent="."]
+position = Vector3(12, 1.5, 7.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TightPocketLeft"]
+shape = SubResource("Shape_pocket_side")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TightPocketLeft"]
+mesh = SubResource("Mesh_pocket_side")
+
+[node name="TightPocketRight" type="StaticBody3D" parent="."]
+position = Vector3(16, 1.5, 7.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TightPocketRight"]
+shape = SubResource("Shape_pocket_side")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TightPocketRight"]
+mesh = SubResource("Mesh_pocket_side")
+
+[node name="LibertyCharacter" parent="." instance=ExtResource("1_character")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-55, -35, 0)
+shadow_enabled = true
+
+[node name="Instructions" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="Instructions"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 700.0
+offset_bottom = 120.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 20
+text = "PHASE 2 CAMERA COURSE\nWASD move · Alt walk · Shift sprint · Space jump · Mouse orbit\nCheck soft recenter, walls/pillars, low ceiling, corners, and the tight orange pocket."
